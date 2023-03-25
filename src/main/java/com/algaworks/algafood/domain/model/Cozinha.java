@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded=true)
 public class Cozinha {
 
     @EqualsAndHashCode.Include
