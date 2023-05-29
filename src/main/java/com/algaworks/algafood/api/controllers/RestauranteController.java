@@ -96,14 +96,14 @@ public class RestauranteController {
     private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem,Restaurante.class);
+        Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
 
         dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
 
             Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
             field.setAccessible(true);
 
-            Object novoValor = ReflectionUtils.getField(field,restauranteOrigem);
+            Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
 
             ReflectionUtils.setField(field, restauranteDestino, novoValor);
 
