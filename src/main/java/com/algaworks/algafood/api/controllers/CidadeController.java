@@ -6,7 +6,6 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +16,14 @@ import java.util.List;
 @RequestMapping(value = "/cidades")
 public class CidadeController {
 
-    @Autowired
-    private CidadeRepository cidadeRepository;
+    private final CidadeRepository cidadeRepository;
 
-    @Autowired
-    private CadastroCidadeService cadastroCidadeService;
+    private final CadastroCidadeService cadastroCidadeService;
+
+    public CidadeController(CidadeRepository cidadeRepository, CadastroCidadeService cadastroCidadeService) {
+        this.cidadeRepository = cidadeRepository;
+        this.cadastroCidadeService = cadastroCidadeService;
+    }
 
     @GetMapping
     public List<Cidade> listar() {

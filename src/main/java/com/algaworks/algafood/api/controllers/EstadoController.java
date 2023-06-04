@@ -17,11 +17,14 @@ import java.util.List;
 @RequestMapping("/estados")
 public class EstadoController {
 
-    @Autowired
-    private EstadoRepository estadoRepository;
+    private final EstadoRepository estadoRepository;
 
-    @Autowired
-    private CadastroEstadoService cadastroEstado;
+    private final CadastroEstadoService cadastroEstado;
+
+    public EstadoController(EstadoRepository estadoRepository, CadastroEstadoService cadastroEstado) {
+        this.estadoRepository = estadoRepository;
+        this.cadastroEstado = cadastroEstado;
+    }
 
     @GetMapping
     public List<Estado> listar() {

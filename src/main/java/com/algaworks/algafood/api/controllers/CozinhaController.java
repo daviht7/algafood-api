@@ -17,11 +17,14 @@ import java.util.List;
 @RequestMapping("/cozinhas")
 public class CozinhaController {
 
-    @Autowired
-    private CozinhaRepository cozinhaRepository;
+    private final CozinhaRepository cozinhaRepository;
 
-    @Autowired
-    private CadastroCozinhaService cadastroCozinhaService;
+    private final CadastroCozinhaService cadastroCozinhaService;
+
+    public CozinhaController(CozinhaRepository cozinhaRepository, CadastroCozinhaService cadastroCozinhaService) {
+        this.cozinhaRepository = cozinhaRepository;
+        this.cadastroCozinhaService = cadastroCozinhaService;
+    }
 
     @GetMapping
     public List<Cozinha> listar() {
