@@ -6,7 +6,6 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
@@ -20,27 +19,27 @@ import java.util.Map;
 @RequestMapping("/restaurantes")
 public class RestauranteController {
 
-    @Autowired
-    private RestauranteRepository restauranteRepository;
+    private final RestauranteRepository restauranteRepository;
 
     private final CadastroRestauranteService cadastroRestauranteService;
 
-    public RestauranteController(CadastroRestauranteService cadastroRestauranteService) {
+    public RestauranteController(CadastroRestauranteService cadastroRestauranteService, RestauranteRepository restauranteRepository) {
         this.cadastroRestauranteService = cadastroRestauranteService;
+        this.restauranteRepository = restauranteRepository;
     }
 
     @GetMapping
     public ResponseEntity<List<Restaurante>> listarTodos() {
-        return ResponseEntity.ok(restauranteRepository.listar());
+        return ResponseEntity.ok(restauranteRepository.findAll());
     }
 
     @GetMapping("/{restauranteId}")
     public ResponseEntity<Restaurante> buscar(@PathVariable("restauranteId") Long restauranteId) {
 
-        var restauranteExistente = restauranteRepository.buscar(restauranteId);
+        var restauranteExistente = restauranteRepository.findById(restauranteId);
 
-        if (restauranteExistente != null) {
-            return ResponseEntity.ok(restauranteRepository.buscar(restauranteId));
+        if (restauranteExistente.isPresent()) {
+            return ResponseEntity.ok(restauranteExistente.get());
         }
 
         return ResponseEntity.notFound().build();
@@ -60,13 +59,13 @@ public class RestauranteController {
     public ResponseEntity<?> atualizar(@PathVariable Long restauranteId,
                                        @RequestBody Restaurante restaurante) {
         try {
-            Restaurante restauranteAtual = restauranteRepository.buscar(restauranteId);
+            var restauranteAtual = restauranteRepository.findById(restauranteId);
 
-            if (restauranteAtual != null) {
-                BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
+            if (restauranteAtual.isPresent()) {
+                BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id");
 
-                restauranteAtual = cadastroRestauranteService.salvar(restauranteAtual);
-                return ResponseEntity.ok(restauranteAtual);
+                var restauranteSalvo = cadastroRestauranteService.salvar(restauranteAtual.get());
+                return ResponseEntity.ok(restauranteSalvo);
             }
 
             return ResponseEntity.notFound().build();
@@ -81,15 +80,15 @@ public class RestauranteController {
     public ResponseEntity<?> atualizarParcial(@PathVariable Long restauranteId,
                                               @RequestBody Map<String, Object> campos) {
 
-        Restaurante restauranteAtual = restauranteRepository.buscar(restauranteId);
+        var restauranteAtual = restauranteRepository.findById(restauranteId);
 
-        if (restauranteAtual == null) {
+        if (restauranteAtual.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        merge(campos, restauranteAtual);
+        merge(campos, restauranteAtual.get());
 
-        return atualizar(restauranteId, restauranteAtual);
+        return atualizar(restauranteId, restauranteAtual.get());
 
     }
 
