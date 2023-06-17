@@ -2,6 +2,8 @@ package com.algaworks.algafood.domain.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.math.BigDecimal;
 
@@ -22,7 +24,9 @@ public class Restaurante {
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 
-	@ManyToOne()
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "cozinha_id", nullable = false)
+	@Fetch(FetchMode.SELECT)
 	private Cozinha cozinha;
 
 }
