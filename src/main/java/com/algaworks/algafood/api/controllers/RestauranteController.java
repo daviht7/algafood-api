@@ -4,6 +4,8 @@ import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
+import com.algaworks.algafood.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
+import com.algaworks.algafood.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -36,7 +38,12 @@ public class RestauranteController {
 
     @GetMapping("/por-nome")
     public ResponseEntity<List<Restaurante>> consultarPorNomeTaxaFrete(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
-        return ResponseEntity.ok(restauranteRepository.find(nome, taxaFreteInicial, taxaFreteFinal));
+
+        var comFreteGratis = new RestauranteComFreteGratisSpec();
+        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+
+        //return ResponseEntity.ok(restauranteRepository.find(nome, taxaFreteInicial, taxaFreteFinal));
+        return ResponseEntity.ok(restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante)));
     }
 
     @GetMapping("/{restauranteId}")
