@@ -24,9 +24,8 @@ public class Restaurante {
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "cozinha_id", nullable = false)
-	@Fetch(FetchMode.SELECT)
 	private Cozinha cozinha;
 
 }
