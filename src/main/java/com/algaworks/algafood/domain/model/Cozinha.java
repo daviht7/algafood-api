@@ -23,6 +23,7 @@ public class Cozinha {
     @Column(nullable = false)
     private String nome;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "cozinha")
     private List<Restaurante> restaurantes = new ArrayList<>();
 
