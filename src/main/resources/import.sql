@@ -9,7 +9,9 @@ insert into cidade(nome,estado_id) values('Fortaleza',1);
 insert into cidade(nome,estado_id) values('Campinas',2);
 insert into cidade(nome,estado_id) values('Belo horizonte',3);
 
-insert into restaurante (nome,taxa_frete,cozinha_id) values ('Tio armênio',10.0,1);
+
+
+insert into restaurante (nome,taxa_frete,cozinha_id,endereco_cidade_id,endereco_cep,endereco_logradouro,endereco_complemento,endereco_numero,endereco_bairro) values ('Tio armênio',10.0,1,1,'60741510','rua santiago','B','279','serrinha');
 insert into restaurante (nome,taxa_frete,cozinha_id) values ('Bar chá da égua', 5.55,2);
 insert into restaurante (nome,taxa_frete,cozinha_id) values ('Cozinha mineira', 0,2);
 
