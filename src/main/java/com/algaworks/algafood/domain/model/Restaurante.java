@@ -37,12 +37,12 @@ public class Restaurante {
 
     @JsonIgnore
     @CreationTimestamp
-    @Column(nullable = false,columnDefinition = "datetime")
+    @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataCadastro;
 
     @JsonIgnore
     @UpdateTimestamp
-    @Column(nullable = false,columnDefinition = "datetime")
+    @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataAtualizacao;
 
     @JsonIgnore
@@ -51,5 +51,9 @@ public class Restaurante {
             joinColumns = @JoinColumn(name = "restaurante_id"),
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
     private List<FormaPagamento> formasPagamento = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurante")
+    private List<Produto> produtos = new ArrayList<>();
 
 }
