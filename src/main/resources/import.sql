@@ -13,7 +13,7 @@ insert into restaurante (id,nome,taxa_frete,cozinha_id,endereco_cidade_id,endere
 insert into restaurante (id,nome,taxa_frete,cozinha_id,data_cadastro,data_atualizacao) values (2,'Bar chá da égua', 5.55,2,utc_timestamp,utc_timestamp);
 insert into restaurante (id,nome,taxa_frete,cozinha_id,data_cadastro,data_atualizacao) values (3,'Cozinha mineira', 0,2,utc_timestamp,utc_timestamp);
 
-insert into produto(id,nome,descricao,preco,ativo,restaurante) values(1,'carne moida','pedaco de carne moida',10.00,true,1);
+insert into produto(id,nome,descricao,preco,ativo,restaurante) values (1,'carne moida','pedaco de carne moida',10.00,true,1);
 
 insert into forma_pagamento(id,nome) values(1,'Cartão de credito');
 insert into forma_pagamento(id,nome) values(2,'Cartão de debito');
