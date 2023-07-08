@@ -46,6 +46,8 @@ public class RestauranteController {
 
         var restauranteExistente = restauranteRepository.findById(restauranteId);
 
+        restauranteExistente.get().getFormasPagamento().forEach(t -> System.out.println(t.toString()));
+
         if (restauranteExistente.isPresent()) {
             return ResponseEntity.ok(restauranteExistente.get());
         }
@@ -70,7 +72,7 @@ public class RestauranteController {
             var restauranteAtual = restauranteRepository.findById(restauranteId);
 
             if (restauranteAtual.isPresent()) {
-                BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id","formasPagamento","endereco","dataCadastro");
+                BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id", "formasPagamento", "endereco", "dataCadastro");
 
                 var restauranteSalvo = cadastroRestauranteService.salvar(restauranteAtual.get());
                 return ResponseEntity.ok(restauranteSalvo);
