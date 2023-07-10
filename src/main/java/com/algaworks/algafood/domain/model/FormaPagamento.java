@@ -16,6 +16,6 @@ public class FormaPagamento {
     private Long id;
 
     @Column(nullable = false)
-    private String nome;
+    private String descricao;
 
 }
