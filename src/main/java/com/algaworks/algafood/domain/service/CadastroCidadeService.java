@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CadastroCidadeService {
 
+    public static final String MSG_CIDADE_INEXISTENTE = "Não existe cadastro de estado com código %d";
     private final CidadeRepository cidadeRepository;
 
     private final EstadoRepository estadoRepository;
@@ -24,7 +25,7 @@ public class CadastroCidadeService {
     public Cidade salvar(Cidade cidade) {
         Long estadoId = cidade.getEstado().getId();
         var estado = estadoRepository.findById(estadoId).orElseThrow(() -> new EntidadeNaoEncontradaException(
-                String.format("Não existe cadastro de estado com código %d", estadoId)));
+                String.format(MSG_CIDADE_INEXISTENTE, estadoId)));
 
         cidade.setEstado(estado);
 
@@ -43,6 +44,10 @@ public class CadastroCidadeService {
             throw new EntidadeEmUsoException(
                     String.format("Cidade de código %d não pode ser removida, pois está em uso", cidadeId));
         }
+    }
+    
+    public Cidade buscarOuFalhar(Long cidadeId) {
+        return cidadeRepository.findById(cidadeId).orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_CIDADE_INEXISTENTE, cidadeId)));
     }
 
 }
