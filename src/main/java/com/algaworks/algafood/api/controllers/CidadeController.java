@@ -1,6 +1,5 @@
 package com.algaworks.algafood.api.controllers;
 
-import com.algaworks.algafood.api.exceptionhandler.Problema;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -41,18 +39,23 @@ public class CidadeController {
 
     @PostMapping
     public Cidade adicionar(@RequestBody Cidade cidade) {
-        return cadastroCidadeService.salvar(cidade);
+        try {
+            return cadastroCidadeService.salvar(cidade);
+        } catch (EstadoNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
+
     }
 
     @PutMapping("/{cidadeId}")
     public Cidade atualizar(@PathVariable Long cidadeId,
                             @RequestBody Cidade cidade) {
 
-            var cidadeAtual = cadastroCidadeService.buscarOuFalhar(cidadeId);
+        var cidadeAtual = cadastroCidadeService.buscarOuFalhar(cidadeId);
 
-            BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+        BeanUtils.copyProperties(cidade, cidadeAtual, "id");
 
-            return cadastroCidadeService.salvar(cidadeAtual);
+        return cadastroCidadeService.salvar(cidadeAtual);
 
     }
 
@@ -69,15 +72,5 @@ public class CidadeController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
-
-    @ExceptionHandler(EstadoNaoEncontradoException.class)
-    public ResponseEntity<?> tratarEstadoNaoEncontradoException(EntidadeNaoEncontradaException e) {
-
-        Problema problema = Problema.builder().dataHora(LocalDateTime.now()).mensagem(e.getMessage()).build();
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(problema);
-    }
-
 
 }
